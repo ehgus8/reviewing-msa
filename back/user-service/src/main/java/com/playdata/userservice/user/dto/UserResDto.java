@@ -1,7 +1,6 @@
 package com.playdata.userservice.user.dto;
 
 import com.playdata.userservice.common.auth.Role;
-import com.playdata.userservice.common.entity.Address;
 import lombok.*;
 
 @Getter
@@ -13,7 +12,8 @@ import lombok.*;
 public class UserResDto {
     private Long id;
     private String email;
-    private String name;
+    private String nickName;
+    private String profileImage;
+    private int point;
     private Role role;
-    private Address address;
 }

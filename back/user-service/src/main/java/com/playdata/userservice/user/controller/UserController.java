@@ -38,7 +38,7 @@ public class UserController {
         UserResDto saved = userService.createUser(dto);
         CommonResDto resDto
                 = new CommonResDto(HttpStatus.CREATED,
-                "User Created", saved.getName());
+                "User Created", saved.getNickName());
 
         return new ResponseEntity<>(resDto, HttpStatus.CREATED);
     }
@@ -51,11 +51,11 @@ public class UserController {
                 = jwtTokenProvider.createToken(user.getEmail(), user.getRole().toString());
         String refreshToken
                 = jwtTokenProvider.createRefreshToken(user.getEmail(), user.getRole().toString());
-        redisTemplate.opsForValue().set("user:refresh:" + user.getId(), refreshToken, 2, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("user:refresh:" , refreshToken, 2, TimeUnit.MINUTES);
 
         Map<String, Object> loginInfo = new HashMap<>();
         loginInfo.put("token", token);
-        loginInfo.put("id", user.getId());
+//        loginInfo.put("id", user.getId());
         loginInfo.put("role", user.getRole().toString());
 
         CommonResDto resDto
