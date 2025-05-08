@@ -1,5 +1,19 @@
 server:
   port: 0
+  # S3 연동
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+  cloud:
+    aws:
+      credentials:
+        accessKey: ${AWS_ACCESS_KEY}
+        secretKey: ${AWS_SECRET_KEY}
+      region:
+        static: ap-northeast-2
+      s3:
+        bucket: playdata-team3
 
 spring:
   application:
@@ -19,6 +33,9 @@ spring:
     redis:
       host: localhost
       port: 6379
+  config:
+
+
 jwt:
   expiration: 1
   secretKey: rI9KLc/nWq+0ehvbQXjST52lIHi+A4PurdKwAe0ZcN+0LE1QBv7p0qhFx8wzt8PaigtMXpJHdIl6p4ILsLDasA==
