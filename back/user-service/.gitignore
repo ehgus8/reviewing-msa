@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### S3 Bucket ###
-.env
+.application-local.yml

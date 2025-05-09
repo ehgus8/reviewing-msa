@@ -4,6 +4,7 @@ import com.playdata.userservice.common.auth.JwtTokenProvider;
 import com.playdata.userservice.common.dto.CommonErrorDto;
 import com.playdata.userservice.common.dto.CommonResDto;
 import com.playdata.userservice.user.dto.UserLoginReqDto;
+import com.playdata.userservice.user.dto.UserRequestDto;
 import com.playdata.userservice.user.dto.UserResDto;
 import com.playdata.userservice.user.dto.UserSaveReqDto;
 import com.playdata.userservice.user.entity.User;
@@ -13,11 +14,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,8 @@ public class UserController {
     private final RedisTemplate<String, Object> redisTemplate;
 
     @PostMapping("/users/signup")
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserSaveReqDto dto) {
+    public ResponseEntity<?> createUser(
+            @Valid @RequestBody UserSaveReqDto dto) {
         UserResDto saved = userService.createUser(dto);
         CommonResDto resDto
                 = new CommonResDto(HttpStatus.CREATED,
@@ -42,6 +43,19 @@ public class UserController {
 
         return new ResponseEntity<>(resDto, HttpStatus.CREATED);
     }
+
+    @PostMapping("/user/profile")
+    public ResponseEntity<?> uploadProfile(
+            UserRequestDto dto) throws Exception {
+        userService.uploadProfile(dto);
+        CommonResDto resDto
+                = new CommonResDto(HttpStatus.OK,
+                "upload success", null);
+
+        return new ResponseEntity<>(resDto, HttpStatus.OK);
+    }
+
+
 
     @PostMapping("/user/login")
     public ResponseEntity<?> login(@RequestBody UserLoginReqDto dto) {
@@ -51,11 +65,11 @@ public class UserController {
                 = jwtTokenProvider.createToken(user.getEmail(), user.getRole().toString());
         String refreshToken
                 = jwtTokenProvider.createRefreshToken(user.getEmail(), user.getRole().toString());
-        redisTemplate.opsForValue().set("user:refresh:" , refreshToken, 2, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set("user:refresh:", refreshToken, 2, TimeUnit.MINUTES);
 
         Map<String, Object> loginInfo = new HashMap<>();
         loginInfo.put("token", token);
-//        loginInfo.put("id", user.getId());
+        loginInfo.put("id", user.getId());
         loginInfo.put("role", user.getRole().toString());
 
         CommonResDto resDto

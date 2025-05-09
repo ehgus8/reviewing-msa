@@ -33,6 +33,7 @@ public class User extends BaseTimeEntity {
     private int point = 0;
 
     @Column(length = 255, nullable = true)
+    @Setter
     private String profileImage;
 
     @Enumerated(EnumType.STRING)

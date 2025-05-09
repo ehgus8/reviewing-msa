@@ -36,6 +36,7 @@ public class SecurityConfig {
 //                    .requestMatchers("/user/list").hasRole("ROLE_ADMIN")
                     .requestMatchers("/user-service/users/signup",
                             "/user-service/user/login",
+                            "/user-service/user/profile",
                             "/user-service/user/refresh").permitAll()
                     .anyRequest().authenticated();
         });

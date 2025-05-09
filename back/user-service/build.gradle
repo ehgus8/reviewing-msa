@@ -51,6 +51,7 @@ dependencies {
 
     // S3 파일연동
     implementation 'io.awspring.cloud:spring-cloud-aws-s3:3.0.2'
+    implementation 'me.paulschwarz:spring-dotenv:2.2.0'
 }
 
 dependencyManagement {

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -26,7 +27,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory {
     @Value("${jwt.secretKey}")
     private String secretKey;
 
-    private final List<String> allowedPaths = List.of("/user-service/user/login", "/user-service/users/signup");
+    private final List<String> allowedPaths = List.of("/user-service/user/login", "/user-service/users/signup", "/user-service//user/profile");
 
     @Override
     public GatewayFilter apply(Object config) {
